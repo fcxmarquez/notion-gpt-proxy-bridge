@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     commonjs: true,
     es2021: true,
   },
@@ -10,17 +9,6 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
   ],
   plugins: ["@typescript-eslint"],
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: [".eslintrc.{js,cjs}"],
-      parserOptions: {
-        sourceType: "script",
-      },
-    },
-  ],
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
@@ -31,12 +19,30 @@ module.exports = {
     "no-useless-constructor": "off",
     "no-empty-function": "off",
     "class-methods-use-this": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
+    "import/prefer-default-export": "off",
+    "no-unused-expressions": "off",
   },
   settings: {
     "import/resolver": {
       node: {
         extensions: [".js", ".jsx", ".ts", ".tsx"],
+        project: "./tsconfig.json",
+      },
+      typescript: {
+        alwaysTryTypes: true,
+        project: "./tsconfig.json",
       },
     },
   },
+  ignorePatterns: ["*.md"],
 };

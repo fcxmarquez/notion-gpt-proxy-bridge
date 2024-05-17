@@ -1,6 +1,6 @@
 import axios from "axios";
-import { config } from "@/config/config";
 import { Router } from "express";
+import { config } from "config/config";
 import { handleError } from "@/utils/errorHandler";
 
 const router = Router();
@@ -11,7 +11,7 @@ router.get("/search", async (req, res) => {
     const response = await axios.post(
       "https://api.notion.com/v1/search",
       {
-        query: query,
+        query,
         sort: {
           direction: "ascending",
           timestamp: "last_edited_time",
