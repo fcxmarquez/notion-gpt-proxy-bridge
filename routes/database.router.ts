@@ -1,11 +1,10 @@
 import axios from "axios";
 import { Router } from "express";
 import { config } from "config/config";
-import { handleError } from "@/utils/errorHandler";
 
 const router = Router();
 
-router.get("/database/:id", async (req, res) => {
+router.get("/database/:id", async (req, res, next) => {
   const databaseId = req.params.id;
   try {
     const response = await axios.get(
@@ -19,8 +18,7 @@ router.get("/database/:id", async (req, res) => {
     );
     res.send(response.data);
   } catch (error) {
-    const { message, status } = handleError(error);
-    res.status(status).send(message);
+    next(error);
   }
 });
 

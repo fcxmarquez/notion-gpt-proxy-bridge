@@ -1,5 +1,5 @@
 import express, { Express } from "express";
-import pageRouter from "routes/page.router";
+import { pageRouter } from "routes/page.router";
 import searchRouter from "routes/search.router";
 import databaseRouter from "routes/database.router";
 
