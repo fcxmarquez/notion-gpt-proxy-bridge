@@ -5,4 +5,4 @@ const router = Router();
 
 router.get("/database/:id", getDatabaseController);
 
-export default router;
+export const databaseRouter = router;
