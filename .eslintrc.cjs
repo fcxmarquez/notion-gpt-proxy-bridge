@@ -44,5 +44,5 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["*.md"],
+  ignorePatterns: ["*.md", "node_modules/", "dist/"],
 };

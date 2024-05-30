@@ -11,7 +11,7 @@ export const getPageController = async (
   try {
     const pageId = req.params.id;
     const authorization = req.headers.authorization || "";
-    const data = await pageService.getPage(pageId, authorization);
+    const data = await pageService.getPageChildrens(pageId, authorization);
     res.send(data);
   } catch (error) {
     next(error);
