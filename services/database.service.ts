@@ -1,5 +1,5 @@
 import axiosInstance from "@/utils/axiosNotionInstance";
-import { config } from "config/config";
+import { config } from "@/config/config";
 
 export class DatabaseService {
   async getDatabase(databaseId: string, authorization: string) {
