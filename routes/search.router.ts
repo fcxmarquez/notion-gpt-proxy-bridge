@@ -3,6 +3,6 @@ import { getSearch } from "@/controllers/search.controller";
 
 const router = Router();
 
-router.get("/search", getSearch);
+router.get("/", getSearch);
 
 export const searchRouter = router;

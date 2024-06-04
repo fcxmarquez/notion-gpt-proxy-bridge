@@ -3,7 +3,7 @@ import { getPageController, updatePageController } from "@/controllers/page.cont
 
 const router = express.Router();
 
-router.get("/page/childrens/:id", getPageController);
-router.patch("/page/:id", updatePageController);
+router.get("/childrens/:id", getPageController);
+router.patch("/:id", updatePageController);
 
 export const pageRouter = router;

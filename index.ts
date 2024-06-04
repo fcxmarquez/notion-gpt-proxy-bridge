@@ -1,7 +1,7 @@
 import express from "express";
-import { config } from "@/config/config.js";
+import { config } from "@/config/config";
 import { authenticateRequest, handleError } from "@/middleware";
-import { routerApi } from "@/routes/index.js";
+import { routerApi } from "@/routes";
 
 const app = express();
 const PORT = config.port || 3000;

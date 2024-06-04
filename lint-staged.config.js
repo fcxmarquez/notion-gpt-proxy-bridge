@@ -1,4 +1,4 @@
-export default {
+const lintStagedConfig = {
   // this will check Typescript files
   "**/*.(ts|tsx)": () => "npx tsc --noEmit",
 
@@ -11,3 +11,5 @@ export default {
   // this will Format MarkDown and JSON
   "**/*.(md|json)": (filenames) => `npx prettier --write ${filenames.join(" ")}`,
 };
+
+module.exports = lintStagedConfig;
