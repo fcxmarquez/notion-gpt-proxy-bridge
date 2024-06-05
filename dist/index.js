@@ -9,6 +9,7 @@ const middleware_1 = require("./middleware");
 const routes_1 = require("./routes");
 const app = (0, express_1.default)();
 const PORT = config_1.config.port || 3000;
+app.use(express_1.default.json());
 app.use(middleware_1.authenticateRequest);
 (0, routes_1.routerApi)(app);
 app.use(middleware_1.handleError);

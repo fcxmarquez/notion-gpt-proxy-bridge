@@ -6,6 +6,7 @@ import { routerApi } from "@/routes";
 const app = express();
 const PORT = config.port || 3000;
 
+app.use(express.json());
 app.use(authenticateRequest);
 
 routerApi(app);
