@@ -8,5 +8,6 @@ const express_1 = __importDefault(require("express"));
 const page_controller_1 = require("../controllers/page.controller");
 const router = express_1.default.Router();
 router.get("/:id", page_controller_1.getPageController);
+router.post("/", page_controller_1.createPageController);
 exports.pageRouter = router;
 //# sourceMappingURL=page.router.js.map

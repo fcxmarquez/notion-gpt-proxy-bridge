@@ -15,6 +15,14 @@ class PageService {
         });
         return response.data;
     }
+    async createPage(pageData, authorization) {
+        const response = await axiosNotionInstance_1.default.post(`${config_1.config.notionURLAPI}/pages`, pageData, {
+            headers: {
+                Authorization: authorization,
+            },
+        });
+        return response.data;
+    }
 }
 exports.PageService = PageService;
 //# sourceMappingURL=page.service.js.map

@@ -10,4 +10,13 @@ export class PageService {
     });
     return response.data;
   }
+
+  async createPage(pageData: unknown, authorization: string) {
+    const response = await axiosInstance.post(`${config.notionURLAPI}/pages`, pageData, {
+      headers: {
+        Authorization: authorization,
+      },
+    });
+    return response.data;
+  }
 }

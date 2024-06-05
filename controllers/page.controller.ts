@@ -17,3 +17,18 @@ export const getPageController = async (
     next(error);
   }
 };
+
+export const createPageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const pageData = req.body;
+    const authorization = req.headers.authorization || "";
+    const data = await pageService.createPage(pageData, authorization);
+    res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
