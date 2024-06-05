@@ -1,0 +1,553 @@
+openapi: 3.1.0
+info:
+  title: Notion GPT Proxy Bridge API
+  description: API to interact with Notion's API, providing endpoints to fetch blocks, update blocks, retrieve databases, and perform searches.
+  version: 1.0.0
+servers:
+  - url: https://notion-gpt-proxy-bridge.vercel.app/
+paths:
+  /api/v1/blocks/{blockId}:
+    get:
+      operationId: getBlock
+      summary: Retrieve a Notion block by ID
+      parameters:
+        - in: path
+          name: blockId
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion block to retrieve
+      responses:
+        '200':
+          description: Successfully retrieved the block
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                  id:
+                    type: string
+                  created_time:
+                    type: string
+                  last_edited_time:
+                    type: string
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+    patch:
+      operationId: updateBlock
+      summary: Update a Notion block by ID
+      parameters:
+        - in: path
+          name: blockId
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion block to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              examples:
+                - example1:
+                    value:
+                      title: "Updated Block Title"
+      responses:
+        '200':
+          description: Successfully updated the block
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+    delete:
+      operationId: deleteBlock
+      summary: Delete a Notion block by ID
+      parameters:
+        - in: path
+          name: blockId
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion block to delete
+      responses:
+        '200':
+          description: Successfully deleted the block
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+  /api/v1/blocks/{blockId}/children:
+    get:
+      operationId: getBlockChildren
+      summary: Retrieve children of a Notion block by ID
+      parameters:
+        - in: path
+          name: blockId
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion block to retrieve children for
+      responses:
+        '200':
+          description: Successfully retrieved the block children
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        object:
+                          type: string
+                        id:
+                          type: string
+                        parent:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            page_id:
+                              type: string
+                        created_time:
+                          type: string
+                        last_edited_time:
+                          type: string
+                        created_by:
+                          type: object
+                          properties:
+                            object:
+                              type: string
+                            id:
+                              type: string
+                        last_edited_by:
+                          type: object
+                          properties:
+                            object:
+                              type: string
+                            id:
+                              type: string
+                        has_children:
+                          type: boolean
+                        archived:
+                          type: boolean
+                        in_trash:
+                          type: boolean
+                        type:
+                          type: string
+                        paragraph:
+                          type: object
+                          properties:
+                            rich_text:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                  text:
+                                    type: object
+                                    properties:
+                                      content:
+                                        type: string
+                                      link:
+                                        type: string
+                                  annotations:
+                                    type: object
+                                    properties:
+                                      bold:
+                                        type: boolean
+                                      italic:
+                                        type: boolean
+                                      strikethrough:
+                                        type: boolean
+                                      underline:
+                                        type: boolean
+                                      code:
+                                        type: boolean
+                                      color:
+                                        type: string
+                                  plain_text:
+                                    type: string
+                                  href:
+                                    type: string
+                            color:
+                              type: string
+                        numbered_list_item:
+                          type: object
+                          properties:
+                            rich_text:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                  text:
+                                    type: object
+                                    properties:
+                                      content:
+                                        type: string
+                                      link:
+                                        type: string
+                                  annotations:
+                                    type: object
+                                    properties:
+                                      bold:
+                                        type: boolean
+                                      italic:
+                                        type: boolean
+                                      strikethrough:
+                                        type: boolean
+                                      underline:
+                                        type: boolean
+                                      code:
+                                        type: boolean
+                                      color:
+                                        type: string
+                                  plain_text:
+                                    type: string
+                                  href:
+                                    type: string
+                            color:
+                              type: string
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+    patch:
+      operationId: appendBlockChildren
+      summary: Append children to a Notion block by ID
+      parameters:
+        - in: path
+          name: blockId
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion block to append children to
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                children:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      object:
+                        type: string
+                      type:
+                        type: string
+                      heading_2:
+                        type: object
+                        properties:
+                          rich_text:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                text:
+                                  type: object
+                                  properties:
+                                    content:
+                                      type: string
+                      paragraph:
+                        type: object
+                        properties:
+                          rich_text:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                text:
+                                  type: object
+                                  properties:
+                                    content:
+                                      type: string
+                                    link:
+                                      type: object
+                                      properties:
+                                        url:
+                                          type: string
+              examples:
+                - example1:
+                    value:
+                      children: 
+                        - object: block
+                          type: heading_2
+                          heading_2:
+                            rich_text:
+                              - type: text
+                                text:
+                                  content: Lacinato kale
+                        - object: block
+                          type: paragraph
+                          paragraph:
+                            rich_text:
+                              - type: text
+                                text:
+                                  content: Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.
+                                  link:
+                                    url: https://en.wikipedia.org/wiki/Lacinato_kale
+      responses:
+        '200':
+          description: Successfully appended children to the block
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+  /api/v1/pages/{pageId}:
+    get:
+      operationId: getPage
+      summary: Retrieve a Notion page by ID
+      parameters:
+        - in: path
+          name: pageId
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion page to retrieve
+      responses:
+        '200':
+          description: Successfully retrieved the page
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                  id:
+                    type: string
+                  created_time:
+                    type: string
+                  last_edited_time:
+                    type: string
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+  /api/v1/pages:
+    post:
+      description: Create a page into a database. The properties sended has to match to the properties of the database. If you're not shure not send properties
+      operationId: createPage
+      summary: Create a new Notion page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parent:
+                  type: object
+                  properties:
+                    database_id:
+                      type: string
+                icon:
+                  type: object
+                  properties:
+                    emoji:
+                      type: string
+                cover:
+                  type: object
+                  properties:
+                    external:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                properties:
+                  type: object
+                  properties:
+                    Name:
+                      type: object
+                      properties:
+                        title:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              text:
+                                type: object
+                                properties:
+                                  content:
+                                    type: string
+                    Description:
+                      type: object
+                      properties:
+                        rich_text:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              text:
+                                type: object
+                                properties:
+                                  content:
+                                    type: string
+                    Food group:
+                      type: object
+                      properties:
+                        select:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                    Price:
+                      type: object
+                      properties:
+                        number:
+                          type: number
+                children:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      object:
+                        type: string
+                      type:
+                        type: string
+                      heading_2:
+                        type: object
+                        properties:
+                          rich_text:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                text:
+                                  type: object
+                                  properties:
+                                    content:
+                                      type: string
+                      paragraph:
+                        type: object
+                        properties:
+                          rich_text:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                text:
+                                  type: object
+                                  properties:
+                                    content:
+                                      type: string
+                                    link:
+                                      type: object
+                                      properties:
+                                        url:
+                                          type: string
+              examples:
+                - example1:
+                    value:
+                      parent:
+                        database_id: "d9824bdc84454327be8b5b47500af6ce"
+                      icon:
+                        emoji: "🥬"
+                      properties:
+                        Name:
+                          title:
+                            - text:
+                                content: "Tuscan Kale"
+                        Description:
+                          rich_text:
+                            - text:
+                                content: "A dark green leafy vegetable"
+                        Food group:
+                          select:
+                            name: "Vegetable"
+                        Price:
+                          number: 2.5
+                      children:
+                        - object: block
+                          type: heading_2
+                          heading_2:
+                            rich_text:
+                              - type: text
+                                text:
+                                  content: Lacinato kale
+                        - object: block
+                          type: paragraph
+                          paragraph:
+                            rich_text:
+                              - type: text
+                                text:
+                                  content: Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm.
+                                  link:
+                                    url: https://en.wikipedia.org/wiki/Lacinato_kale
+      responses:
+        '200':
+          description: Successfully created the page
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+  /api/v1/search:
+    get:
+      operationId: searchNotion
+      summary: Search within Notion
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+          description: Query string to search within Notion
+      responses:
+        '200':
+          description: Successfully performed the search
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+  /api/v1/database/{id}:
+    get:
+      operationId: getDatabaseById
+      summary: Retrieve a Notion database by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the Notion database to retrieve
+      responses:
+        '200':
+          description: Successfully retrieved the database
+        '401':
+          description: Authorization information is missing or invalid
+        '500':
+          description: A server error occurred
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas: {}  # Explicitly defining an empty schemas object
+security:
+  - BearerAuth: []
