@@ -3,11 +3,11 @@ import { SearchService } from "@/services/search.service";
 
 const searchService = new SearchService();
 
-export const getSearch = async (req: Request, res: Response, next: NextFunction) => {
+export const postSearch = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const query = req.query.q as string;
+    const pageData = req.body;
     const authorization = req.headers.authorization || "";
-    const searchResult = await searchService.search(query, authorization);
+    const searchResult = await searchService.search(pageData, authorization);
     res.json(searchResult);
   } catch (error) {
     next(error);

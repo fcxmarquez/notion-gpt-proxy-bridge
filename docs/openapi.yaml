@@ -9,7 +9,7 @@ paths:
   /api/v1/blocks/{blockId}:
     get:
       operationId: getBlock
-      summary: Retrieve a Notion block by ID
+      summary: Retrieve a Notion block by ID. If the block returned contains the key has_children true, use the Retrieve block children endpoint to get the list of children.
       parameters:
         - in: path
           name: blockId
@@ -33,43 +33,219 @@ paths:
                     type: string
                   last_edited_time:
                     type: string
+              examples:
+                example1:
+                  summary: A sample block response
+                  value:
+                    object: "block"
+                    id: "c02fc1d3-db8b-45c5-a222-27595b15aea7"
+                    parent:
+                      type: "page_id"
+                      page_id: "59833787-2cf9-4fdf-8782-e53db20768a5"
+                    created_time: "2022-03-01T19:05:00.000Z"
+                    last_edited_time: "2022-03-01T19:05:00.000Z"
+                    created_by:
+                      object: "user"
+                      id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                    last_edited_by:
+                      object: "user"
+                      id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                    has_children: false
+                    archived: false
+                    type: "heading_2"
+                    heading_2:
+                      rich_text:
+                        - type: "text"
+                          text:
+                            content: "Lacinato kale"
+                            link: null
+                          annotations:
+                            bold: false
+                            italic: false
+                            strikethrough: false
+                            underline: false
+                            code: false
+                            color: "default"
+                          plain_text: "Lacinato kale"
+                          href: null
+                      color: "default"
+                      is_toggleable: false
         '401':
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
     patch:
-      operationId: updateBlock
-      summary: Update a Notion block by ID
-      parameters:
-        - in: path
-          name: blockId
-          required: true
-          schema:
-            type: string
-          description: The ID of the Notion block to update
-      requestBody:
-        required: true
-        content:
-          application/json:
+        operationId: updateBlock
+        summary: Updates the content for the specified block_id based on the block type
+        parameters:
+          - in: path
+            name: blockId
+            required: true
             schema:
-              type: object
-              properties:
-                title:
-                  type: string
+              type: string
+            description: The ID of the Notion block to update
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  heading_2:
+                    type: object
+                    properties:
+                      rich_text:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            text:
+                              type: object
+                              properties:
+                                content:
+                                  type: string
+                            annotations:
+                              type: object
+                              properties:
+                                color:
+                                  type: string
               examples:
-                - example1:
+                example1:
+                  summary: A sample request to update a block heading
+                  value:
+                    heading_2:
+                      rich_text:
+                        - text:
+                            content: "Lacinato kale"
+                          annotations:
+                            color: "green"
+        responses:
+          '200':
+            description: Successfully updated the block
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    object:
+                      type: string
+                    id:
+                      type: string
+                    parent:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        page_id:
+                          type: string
+                    created_time:
+                      type: string
+                    last_edited_time:
+                      type: string
+                    created_by:
+                      type: object
+                      properties:
+                        object:
+                          type: string
+                        id:
+                          type: string
+                    last_edited_by:
+                      type: object
+                      properties:
+                        object:
+                          type: string
+                        id:
+                          type: string
+                    has_children:
+                      type: boolean
+                    archived:
+                      type: boolean
+                    type:
+                      type: string
+                    heading_2:
+                      type: object
+                      properties:
+                        rich_text:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              text:
+                                type: object
+                                properties:
+                                  content:
+                                    type: string
+                                  link:
+                                    type: string
+                              annotations:
+                                type: object
+                                properties:
+                                  bold:
+                                    type: boolean
+                                  italic:
+                                    type: boolean
+                                  strikethrough:
+                                    type: boolean
+                                  underline:
+                                    type: boolean
+                                  code:
+                                    type: boolean
+                                  color:
+                                    type: string
+                              plain_text:
+                                type: string
+                              href:
+                                type: string
+                        color:
+                          type: string
+                        is_toggleable:
+                          type: boolean
+                examples:
+                  example1:
+                    summary: A sample response for a block update
                     value:
-                      title: "Updated Block Title"
-      responses:
-        '200':
-          description: Successfully updated the block
-        '401':
-          description: Authorization information is missing or invalid
-        '500':
-          description: A server error occurred
+                      object: "block"
+                      id: "c02fc1d3-db8b-45c5-a222-27595b15aea7"
+                      parent:
+                        type: "page_id"
+                        page_id: "59833787-2cf9-4fdf-8782-e53db20768a5"
+                      created_time: "2022-03-01T19:05:00.000Z"
+                      last_edited_time: "2022-07-06T19:41:00.000Z"
+                      created_by:
+                        object: "user"
+                        id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                      last_edited_by:
+                        object: "user"
+                        id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                      has_children: false
+                      archived: false
+                      type: "heading_2"
+                      heading_2:
+                        rich_text:
+                          - type: "text"
+                            text:
+                              content: "Lacinato kale"
+                              link: null
+                            annotations:
+                              bold: false
+                              italic: false
+                              strikethrough: false
+                              underline: false
+                              code: false
+                              color: "green"
+                            plain_text: "Lacinato kale"
+                            href: null
+                        color: "default"
+                        is_toggleable: false
+          '401':
+            description: Authorization information is missing or invalid
+          '500':
+            description: A server error occurred
     delete:
       operationId: deleteBlock
-      summary: Delete a Notion block by ID
+      summary: Sets a Block object, including page blocks, to archived true using the ID specified. Note in the Notion UI application, this moves the block to the "Trash" where it can still be accessed and restored.
       parameters:
         - in: path
           name: blockId
@@ -80,6 +256,79 @@ paths:
       responses:
         '200':
           description: Successfully deleted the block
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                  id:
+                    type: string
+                  parent:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      page_id:
+                        type: string
+                  created_time:
+                    type: string
+                  last_edited_time:
+                    type: string
+                  created_by:
+                    type: object
+                    properties:
+                      object:
+                        type: string
+                      id:
+                        type: string
+                  last_edited_by:
+                    type: object
+                    properties:
+                      object:
+                        type: string
+                      id:
+                        type: string
+                  has_children:
+                    type: boolean
+                  archived:
+                    type: boolean
+                  type:
+                    type: string
+                  paragraph:
+                    type: object
+                    properties:
+                      rich_text:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+                      color:
+                        type: string
+              examples:
+                example1:
+                  summary: A sample deleted block response
+                  value:
+                    object: "block"
+                    id: "7985540b-2e77-4ac6-8615-c3047e36f872"
+                    parent:
+                      type: "page_id"
+                      page_id: "59833787-2cf9-4fdf-8782-e53db20768a5"
+                    created_time: "2022-07-06T19:52:00.000Z"
+                    last_edited_time: "2022-07-06T19:52:00.000Z"
+                    created_by:
+                      object: "user"
+                      id: "0c3e9826-b8f7-4f73-927d-2caaf86f1103"
+                    last_edited_by:
+                      object: "user"
+                      id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                    has_children: false
+                    archived: true
+                    type: "paragraph"
+                    paragraph:
+                      rich_text: []
+                      color: "default"
         '401':
           description: Authorization information is missing or invalid
         '500':
@@ -87,7 +336,7 @@ paths:
   /api/v1/blocks/{blockId}/children:
     get:
       operationId: getBlockChildren
-      summary: Retrieve children of a Notion block by ID
+      summary: Returns a paginated array of child block objects contained in the block using the ID specified. In order to receive a complete representation of a block, you may need to recursively retrieve the block children of child blocks.
       parameters:
         - in: path
           name: blockId
@@ -143,10 +392,48 @@ paths:
                           type: boolean
                         archived:
                           type: boolean
-                        in_trash:
-                          type: boolean
                         type:
                           type: string
+                        heading_2:
+                          type: object
+                          properties:
+                            rich_text:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                  text:
+                                    type: object
+                                    properties:
+                                      content:
+                                        type: string
+                                      link:
+                                        type: string
+                                  annotations:
+                                    type: object
+                                    properties:
+                                      bold:
+                                        type: boolean
+                                      italic:
+                                        type: boolean
+                                      strikethrough:
+                                        type: boolean
+                                      underline:
+                                        type: boolean
+                                      code:
+                                        type: boolean
+                                      color:
+                                        type: string
+                                  plain_text:
+                                    type: string
+                                  href:
+                                    type: string
+                            color:
+                              type: string
+                            is_toggleable:
+                              type: boolean
                         paragraph:
                           type: object
                           properties:
@@ -163,7 +450,10 @@ paths:
                                       content:
                                         type: string
                                       link:
-                                        type: string
+                                        type: object
+                                        properties:
+                                          url:
+                                            type: string
                                   annotations:
                                     type: object
                                     properties:
@@ -185,51 +475,92 @@ paths:
                                     type: string
                             color:
                               type: string
-                        numbered_list_item:
-                          type: object
-                          properties:
-                            rich_text:
-                              type: array
-                              items:
-                                type: object
-                                properties:
-                                  type:
-                                    type: string
-                                  text:
-                                    type: object
-                                    properties:
-                                      content:
-                                        type: string
-                                      link:
-                                        type: string
-                                  annotations:
-                                    type: object
-                                    properties:
-                                      bold:
-                                        type: boolean
-                                      italic:
-                                        type: boolean
-                                      strikethrough:
-                                        type: boolean
-                                      underline:
-                                        type: boolean
-                                      code:
-                                        type: boolean
-                                      color:
-                                        type: string
-                                  plain_text:
-                                    type: string
-                                  href:
-                                    type: string
-                            color:
-                              type: string
+                  next_cursor:
+                    type: string
+                    nullable: true
+                  has_more:
+                    type: boolean
+              examples:
+                example1:
+                  summary: A sample response for block children
+                  value:
+                    object: "list"
+                    results:
+                      - object: "block"
+                        id: "c02fc1d3-db8b-45c5-a222-27595b15aea7"
+                        parent:
+                          type: "page_id"
+                          page_id: "59833787-2cf9-4fdf-8782-e53db20768a5"
+                        created_time: "2022-03-01T19:05:00.000Z"
+                        last_edited_time: "2022-03-01T19:05:00.000Z"
+                        created_by:
+                          object: "user"
+                          id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                        last_edited_by:
+                          object: "user"
+                          id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                        has_children: false
+                        archived: false
+                        type: "heading_2"
+                        heading_2:
+                          rich_text:
+                            - type: "text"
+                              text:
+                                content: "Lacinato kale"
+                                link: null
+                              annotations:
+                                bold: false
+                                italic: false
+                                strikethrough: false
+                                underline: false
+                                code: false
+                                color: "default"
+                              plain_text: "Lacinato kale"
+                              href: null
+                          color: "default"
+                          is_toggleable: false
+                      - object: "block"
+                        id: "acc7eb06-05cd-4603-a384-5e1e4f1f4e72"
+                        parent:
+                          type: "page_id"
+                          page_id: "59833787-2cf9-4fdf-8782-e53db20768a5"
+                        created_time: "2022-03-01T19:05:00.000Z"
+                        last_edited_time: "2022-03-01T19:05:00.000Z"
+                        created_by:
+                          object: "user"
+                          id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                        last_edited_by:
+                          object: "user"
+                          id: "ee5f0f84-409a-440f-983a-a5315961c6e4"
+                        has_children: false
+                        archived: false
+                        type: "paragraph"
+                        paragraph:
+                          rich_text:
+                            - type: "text"
+                              text:
+                                content: "Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm."
+                                link:
+                                  url: "https://en.wikipedia.org/wiki/Lacinato_kale"
+                              annotations:
+                                bold: false
+                                italic: false
+                                strikethrough: false
+                                underline: false
+                                code: false
+                                color: "default"
+                              plain_text: "Lacinato kale is a variety of kale with a long tradition in Italian cuisine, especially that of Tuscany. It is also known as Tuscan kale, Italian kale, dinosaur kale, kale, flat back kale, palm tree kale, or black Tuscan palm."
+                              href: "https://en.wikipedia.org/wiki/Lacinato_kale"
+                          color: "default"
+                    next_cursor: null
+                    has_more: false
         '401':
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
     patch:
       operationId: appendBlockChildren
-      summary: Append children to a Notion block by ID
+      summary: Creates and appends new children blocks to the parent block_id specified. Blocks can be parented by other blocks, pages, or databases.
       parameters:
         - in: path
           name: blockId
@@ -508,16 +839,43 @@ paths:
         '500':
           description: A server error occurred
   /api/v1/search:
-    get:
+    post:
       operationId: searchNotion
-      summary: Search within Notion
-      parameters:
-        - in: query
-          name: q
-          required: true
-          schema:
-            type: string
-          description: Query string to search within Notion
+      summary: Returns all pages or databases, excluding duplicated linked databases, that have titles that include the query param. If no query param is provided, then the response contains all pages or databases that have been shared with the integration. To limit the request to search only pages or to search only databases, use the filter param.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                filter:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    property:
+                      type: string
+                sort:
+                  type: object
+                  properties:
+                    direction:
+                      type: string
+                    timestamp:
+                      type: string
+            examples:
+              example1:
+                summary: A sample search request
+                value:
+                  query: "External tasks"
+                  filter:
+                    value: "database"
+                    property: "object"
+                  sort:
+                    direction: "ascending"
+                    timestamp: "last_edited_time"
       responses:
         '200':
           description: Successfully performed the search

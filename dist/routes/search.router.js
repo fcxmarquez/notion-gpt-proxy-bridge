@@ -4,6 +4,6 @@ exports.searchRouter = void 0;
 const express_1 = require("express");
 const search_controller_1 = require("../controllers/search.controller");
 const router = (0, express_1.Router)();
-router.get("/", search_controller_1.getSearch);
+router.post("/", search_controller_1.postSearch);
 exports.searchRouter = router;
 //# sourceMappingURL=search.router.js.map
