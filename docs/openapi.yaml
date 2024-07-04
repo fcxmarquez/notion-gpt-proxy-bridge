@@ -929,7 +929,7 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /notion/database/{id}:
+  /notion/databases/{id}:
     get:
       operationId: getDatabaseById
       summary: Retrieve a Notion database by ID
