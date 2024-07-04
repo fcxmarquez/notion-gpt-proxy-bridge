@@ -6,7 +6,7 @@ info:
 servers:
   - url: https://notion-gpt-proxy-bridge.vercel.app/
 paths:
-  /api/v1/blocks/{blockId}:
+  /notion/blocks/{blockId}:
     get:
       operationId: getBlock
       summary: Retrieve a Notion block by ID. If the block returned contains the key has_children true, use the Retrieve block children endpoint to get the list of children.
@@ -333,7 +333,7 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /api/v1/blocks/{blockId}/children:
+  /notion/blocks/{blockId}/children:
     get:
       operationId: getBlockChildren
       summary: Returns a paginated array of child block objects contained in the block using the ID specified. In order to receive a complete representation of a block, you may need to recursively retrieve the block children of child blocks.
@@ -646,7 +646,7 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /api/v1/pages/{pageId}:
+  /notion/pages/{pageId}:
     get:
       operationId: getPage
       summary: Retrieve a Notion page by ID
@@ -677,7 +677,7 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /api/v1/pages:
+  /notion/pages:
     post:
       description: Create a page into a database. The properties sended has to match to the properties of the database. If you're not shure not send properties
       operationId: createPage
@@ -838,10 +838,11 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /api/v1/pages/{pageId}/properties/{propertyId}:
+  /notion/pages/{pageId}/properties/{propertyId}:
     get:
       summary: Retrieve a page property item
       description: Retrieves a `property_item` object for a given `page_id` and `property_id`. Depending on the property type, the object returned will either be a value or a paginated list of property item values.
+      operationId: getPageProperty
       parameters:
         - in: path
           name: pageId
@@ -883,10 +884,10 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /api/v1/search:
+  /notion/search:
     post:
       operationId: searchNotion
-      summary: Returns all pages or databases, excluding duplicated linked databases, that have titles that include the query param. If no query param is provided, then the response contains all pages or databases that have been shared with the integration. To limit the request to search only pages or to search only databases, use the filter param.
+      summary: Search Notion pages and databases by title. Returns results matching the query, or all shared items if no query is provided. Use filter to limit search to pages or databases only.
       requestBody:
         required: true
         content:
@@ -928,7 +929,7 @@ paths:
           description: Authorization information is missing or invalid
         '500':
           description: A server error occurred
-  /api/v1/database/{id}:
+  /notion/database/{id}:
     get:
       operationId: getDatabaseById
       summary: Retrieve a Notion database by ID
